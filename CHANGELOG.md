@@ -30,6 +30,7 @@ in the detailed section referring to by linking pull requests or issues.
 * Full Query capabilities for SQL PolicyDefinition Store (#1484)
 * Documentation for `:extensions:data-plane:data-plane-api` (#1579)
 * Allow `TypeManager` to support multiple serialization contexts (#1581)
+* Check response type of IDS multipart messages (#1695)
 
 #### Changed
 
@@ -64,6 +65,8 @@ in the detailed section referring to by linking pull requests or issues.
 * Effectively removed default LIMIT in SQL Contract Def Store (#1515)
 * Add query validation (#1605)
 * Adapt logs to the logging guide (#1425)
+* Fix incompatibility `DecentralizedIdentityServiceExtension` and `FsPrivateKeyResolver` (#1696)
+* Add support for domain port domain in Web Did resolver (#1652)
 
 ## [milestone-4] - 2022-06-07
 
