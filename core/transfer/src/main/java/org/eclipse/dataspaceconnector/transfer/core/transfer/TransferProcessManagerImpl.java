@@ -318,9 +318,9 @@ public class TransferProcessManagerImpl implements TransferProcessManager, Provi
             try {
                 var dataAddressResource = (ProvisionedDataAddressResource) process.getProvisionedResourceSet().getResources().get(0);
                 handleProvisionDataAddressResource(dataAddressResource, process);
-            } catch (Exception e){
+            } catch (Exception e) {
                 monitor.warning("Prepare data request with provisioned presigned url failed.");
-            };
+            }
         }
 
         var dataRequest = process.getDataRequest();
