@@ -151,6 +151,8 @@ class ContractNegotiationApiControllerIntegrationTest {
         registry.register(new TestRemoteMessageDispatcher());
         var request = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorId("connector")
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .protocol(TestRemoteMessageDispatcher.TEST_PROTOCOL)
                 .connectorAddress("connectorAddress")
                 .offer(createOffer())
@@ -172,6 +174,8 @@ class ContractNegotiationApiControllerIntegrationTest {
         registry.register(new TestRemoteMessageDispatcher());
         var request = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorId("connector")
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .protocol(TestRemoteMessageDispatcher.TEST_PROTOCOL)
                 .connectorAddress(null) // breaks validation
                 .offer(createOffer())

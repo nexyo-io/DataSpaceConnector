@@ -38,6 +38,8 @@ class NegotiationInitiateRequestDtoToDataRequestTransformerTest {
     void verify_transform() {
         var dto = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorId("connectorId")
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .connectorAddress("address")
                 .protocol("protocol")
                 .offer(createOffer("offerId", "assetId"))

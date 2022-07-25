@@ -24,6 +24,10 @@ public class NegotiationInitiateRequestDto {
     @NotNull
     private String connectorId;
     @NotNull
+    private String providerAgentId;
+    @NotNull
+    private String consumerAgentId;
+    @NotNull
     private ContractOfferDescription offer;
 
     private NegotiationInitiateRequestDto() {
@@ -40,6 +44,14 @@ public class NegotiationInitiateRequestDto {
 
     public String getConnectorId() {
         return connectorId;
+    }
+
+    public String getProviderAgentId() {
+        return providerAgentId;
+    }
+
+    public String getConsumerAgentId() {
+        return consumerAgentId;
     }
 
     public ContractOfferDescription getOffer() {
@@ -70,6 +82,16 @@ public class NegotiationInitiateRequestDto {
 
         public Builder connectorId(String connectorId) {
             dto.connectorId = connectorId;
+            return this;
+        }
+
+        public Builder providerAgentId(String providerAgentId) {
+            dto.providerAgentId = providerAgentId;
+            return this;
+        }
+
+        public Builder consumerAgentId(String consumerAgentId) {
+            dto.consumerAgentId = consumerAgentId;
             return this;
         }
 

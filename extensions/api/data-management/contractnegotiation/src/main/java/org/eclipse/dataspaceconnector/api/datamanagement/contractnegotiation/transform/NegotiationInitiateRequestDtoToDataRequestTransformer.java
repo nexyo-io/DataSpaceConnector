@@ -45,8 +45,8 @@ public class NegotiationInitiateRequestDtoToDataRequestTransformer implements Dt
                 .id(object.getOffer().getOfferId())
                 .asset(Asset.Builder.newInstance().id(object.getOffer().getAssetId()).build())
                 // TODO: this is a workaround for the bug described in https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/issues/753
-                .consumer(uri("urn:connector:consumer"))
-                .provider(uri("urn:connector:provider"))
+                .consumer(uri(object.getConsumerAgentId()))
+                .provider(uri(object.getProviderAgentId()))
                 .policy(object.getOffer().getPolicy())
                 .build();
         return ContractOfferRequest.Builder.newInstance()

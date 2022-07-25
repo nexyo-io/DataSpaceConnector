@@ -183,6 +183,8 @@ class ContractNegotiationApiControllerTest {
         when(transformerRegistry.transform(isA(NegotiationInitiateRequestDto.class), eq(ContractOfferRequest.class))).thenReturn(Result.success(contractOfferRequest));
         var request = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorId("connectorId")
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .connectorAddress("connectorAddress")
                 .protocol("protocol")
                 .offer(createOffer("offerId"))
@@ -198,6 +200,8 @@ class ContractNegotiationApiControllerTest {
         when(service.initiateNegotiation(isA(ContractOfferRequest.class))).thenReturn(createContractNegotiation("negotiationId"));
         var request = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorId("connectorId")
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .connectorAddress("connectorAddress")
                 .protocol("protocol")
                 .offer(createOffer("offerId"))
@@ -261,6 +265,8 @@ class ContractNegotiationApiControllerTest {
         var rq = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorAddress(connectorAddress)
                 .connectorId(connectorId)
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .protocol(protocol)
                 .offer(createOffer(offerId))
                 .build();
