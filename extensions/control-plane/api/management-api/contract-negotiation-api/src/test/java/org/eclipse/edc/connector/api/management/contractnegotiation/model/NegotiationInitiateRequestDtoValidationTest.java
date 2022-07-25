@@ -55,6 +55,8 @@ class NegotiationInitiateRequestDtoValidationTest {
         var dto = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorAddress("connectorAddress")
                 .connectorId("connectorId")
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .protocol("protocol")
                 .offer(offerDescription)
                 .build();
@@ -68,6 +70,8 @@ class NegotiationInitiateRequestDtoValidationTest {
         var dto = NegotiationInitiateRequestDto.Builder.newInstance()
                 .connectorAddress(connectorAddress)
                 .connectorId(connectorId)
+                .consumerAgentId("urn:connector:consumer")
+                .providerAgentId("urn:connector:provider")
                 .protocol(protocol)
                 .offer(description)
                 .build();
