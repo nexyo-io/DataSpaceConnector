@@ -53,8 +53,8 @@ public class NegotiationInitiateRequestDtoToDataRequestTransformer implements Dt
                 .id(object.getOffer().getOfferId())
                 .asset(Asset.Builder.newInstance().id(object.getOffer().getAssetId()).build())
                 // TODO: this is a workaround for the bug described in https://github.com/eclipse-edc/Connector/issues/753
-                .consumer(URI.create("urn:connector:consumer"))
-                .provider(URI.create("urn:connector:provider"))
+                .consumer(URI.create(object.getConsumerAgentId()))
+                .provider(URI.create(object.getProviderAgentId()))
                 .policy(object.getOffer().getPolicy())
                 .contractStart(now)
                 .contractEnd(now.plusSeconds(object.getOffer().getValidity()))
