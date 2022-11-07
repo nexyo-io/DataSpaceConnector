@@ -44,14 +44,14 @@ public class HttpDataSource implements DataSource {
     private HttpPart getPart() {
         try (var response = with(retryPolicy).get(() -> httpClient.newCall(params.toRequest()).execute())) {
             var body = response.body();
-            var stringBody = body != null ? body.string() : null;
-            if (stringBody == null) {
+            var bytesBody = body != null ? body.bytes() : null;
+            if (bytesBody == null) {
                 throw new EdcException(format("Received empty response body transferring HTTP data for request %s: %s", requestId, response.code()));
             }
             if (response.isSuccessful()) {
-                return new HttpPart(name, stringBody.getBytes());
+                return new HttpPart(name, bytesBody);
             } else {
-                throw new EdcException(format("Received code transferring HTTP data for request %s: %s - %s. %s", requestId, response.code(), response.message(), stringBody));
+                throw new EdcException(format("Received code transferring HTTP data for request %s: %s - %s. %s", requestId, response.code(), response.message(), bytesBody));
             }
         } catch (IOException e) {
             throw new EdcException(e);
