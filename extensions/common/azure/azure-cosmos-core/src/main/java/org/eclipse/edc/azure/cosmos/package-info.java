@@ -12,7 +12,7 @@
  *
  */
 
-@Spi("Azure Cosmos services")
+/** */@Spi("Azure Cosmos services")
 package org.eclipse.edc.azure.cosmos;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

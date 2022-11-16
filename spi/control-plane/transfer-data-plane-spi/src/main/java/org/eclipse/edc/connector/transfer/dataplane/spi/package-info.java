@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "Transfer data plane services")
-package org.eclipse.edc.connector.transfer.dataplane.spi;
+/** */@Spi(value = "Transfer data plane services")
+package org.eclipse.edc.connector.dataplane.transfer.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

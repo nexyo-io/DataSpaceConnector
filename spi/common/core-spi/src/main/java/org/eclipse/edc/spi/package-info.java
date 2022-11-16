@@ -15,7 +15,7 @@
 /**
  * Core SPI
  */
-@Spi(value = "Core services")
+/** */@Spi(value = "Core services")
 package org.eclipse.edc.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

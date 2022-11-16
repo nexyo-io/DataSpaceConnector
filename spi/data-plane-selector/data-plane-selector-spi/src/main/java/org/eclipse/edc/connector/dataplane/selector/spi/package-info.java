@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "DataPlane selector services")
+/** */@Spi(value = "DataPlane selector services")
 package org.eclipse.edc.connector.dataplane.selector.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

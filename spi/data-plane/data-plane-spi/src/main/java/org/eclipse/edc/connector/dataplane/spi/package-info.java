@@ -12,7 +12,7 @@
  *
  */
 
-@Spi("DataPlane services")
+/** */@Spi("DataPlane services")
 package org.eclipse.edc.connector.dataplane.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

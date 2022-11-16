@@ -12,7 +12,7 @@
  *
  */
 
-@Spi("Control Plane API Services")
+/** */@Spi("Control Plane API Services")
 package org.eclipse.edc.connector.api.client.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "IAM DID services")
+/** */@Spi(value = "IAM DID services")
 package org.eclipse.edc.iam.did.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

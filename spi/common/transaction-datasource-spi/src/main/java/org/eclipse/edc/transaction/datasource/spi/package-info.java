@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "DataSource services")
+/** */@Spi(value = "DataSource services")
 package org.eclipse.edc.transaction.datasource.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

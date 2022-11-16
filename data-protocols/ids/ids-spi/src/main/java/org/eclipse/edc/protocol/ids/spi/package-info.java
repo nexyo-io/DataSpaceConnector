@@ -12,7 +12,7 @@
  *
  */
 
-@Spi("IDS Services")
+/** */@Spi("IDS Services")
 package org.eclipse.edc.protocol.ids.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

@@ -12,7 +12,7 @@
  *
  */
 
-/** */@Spi(value = "Policy Engine services")
-package org.eclipse.edc.policy.engine.spi;
+/** */@Spi("Catalog services")
+package org.eclipse.edc.catalog.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

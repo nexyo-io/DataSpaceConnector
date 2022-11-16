@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "Transactional context services")
+/** */@Spi(value = "Transactional context services")
 package org.eclipse.edc.transaction.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

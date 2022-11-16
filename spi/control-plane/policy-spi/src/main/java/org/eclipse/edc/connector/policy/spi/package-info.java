@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "Policy services")
+/** */@Spi(value = "Policy services")
 package org.eclipse.edc.connector.policy.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

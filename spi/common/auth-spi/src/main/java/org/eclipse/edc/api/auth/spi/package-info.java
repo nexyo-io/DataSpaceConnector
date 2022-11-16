@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "Auth services")
+/** */@Spi(value = "Auth services")
 package org.eclipse.edc.api.auth.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

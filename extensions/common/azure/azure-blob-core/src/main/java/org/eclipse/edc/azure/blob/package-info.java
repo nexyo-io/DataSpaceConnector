@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "Azure Blob services")
+/** */@Spi(value = "Azure Blob services")
 package org.eclipse.edc.azure.blob;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;

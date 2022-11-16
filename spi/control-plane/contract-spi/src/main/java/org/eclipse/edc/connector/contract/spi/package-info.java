@@ -12,7 +12,7 @@
  *
  */
 
-@Spi(value = "Contract services")
+/** */@Spi(value = "Contract services")
 package org.eclipse.edc.connector.contract.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.Spi;
