@@ -196,8 +196,6 @@ public class ContractOffer {
             Objects.requireNonNull(contractOffer.id);
             Objects.requireNonNull(contractOffer.asset, "Asset must not be null");
             Objects.requireNonNull(contractOffer.policy, "Policy must not be null");
-            Objects.requireNonNull(contractOffer.contractStart, "Contract start must not be null");
-            Objects.requireNonNull(contractOffer.contractEnd, "Contract end must not be null");
             return contractOffer;
         }
     }

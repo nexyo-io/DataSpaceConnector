@@ -51,25 +51,4 @@ class ContractOfferTest {
                 .hasMessage("Asset must not be null");
     }
 
-    @Test
-    void verifyContractStartNotNull() {
-        assertThatThrownBy(() -> ContractOffer.Builder.newInstance().id("some-id")
-                .asset(Asset.Builder.newInstance().id("test-assetId").build())
-                .policy(Policy.Builder.newInstance().build())
-                .contractEnd(ZonedDateTime.now().plusMonths(1))
-                .build())
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("Contract start must not be null");
-    }
-
-    @Test
-    void verifyContractEndNotNull() {
-        assertThatThrownBy(() -> ContractOffer.Builder.newInstance().id("some-id")
-                .asset(Asset.Builder.newInstance().id("test-assetId").build())
-                .policy(Policy.Builder.newInstance().build())
-                .contractStart(ZonedDateTime.now())
-                .build())
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("Contract end must not be null");
-    }
 }
