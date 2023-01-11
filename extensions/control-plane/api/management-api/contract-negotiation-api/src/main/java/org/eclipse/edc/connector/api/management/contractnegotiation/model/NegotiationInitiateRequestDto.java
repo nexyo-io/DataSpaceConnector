@@ -24,9 +24,9 @@ public class NegotiationInitiateRequestDto {
     private String protocol = "ids-multipart";
     @NotBlank(message = "connectorId is mandatory")
     private String connectorId;
-    @NotNull
+    @NotBlank(message = "providerAgentId is mandatory")
     private String providerAgentId;
-    @NotNull
+    @NotBlank(message = "consumerAgentId is mandatory")
     private String consumerAgentId;
     @NotNull(message = "offer cannot be null")
     private ContractOfferDescription offer;
