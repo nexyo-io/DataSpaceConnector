@@ -37,6 +37,8 @@ public class AzureVaultExtension implements ServiceExtension {
     @Setting
     private static final String VAULT_TENANT_ID = "edc.vault.tenantid";
     @Setting
+    private static final String VAULT_RESOURCE_ID = "edc.vault.resourceid";
+    @Setting
     private static final String VAULT_NAME = "edc.vault.name";
     @Setting
     private static final String VAULT_CLIENT_SECRET = "edc.vault.clientsecret";
@@ -52,17 +54,21 @@ public class AzureVaultExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         var clientId = getMandatorySetting(context, VAULT_CLIENT_ID);
         var tenantId = getMandatorySetting(context, VAULT_TENANT_ID);
+        var resourceId = context.getSetting(VAULT_RESOURCE_ID, null);
         var keyVaultName = getMandatorySetting(context, VAULT_NAME);
 
         var clientSecret = context.getSetting(VAULT_CLIENT_SECRET, null);
         var certPath = context.getSetting(VAULT_CERTIFICATE, null);
-        if (isNullOrEmpty(certPath) && isNullOrEmpty(clientSecret)) {
-            throw new AzureVaultException(String.format("Either '%s' or '%s' must be supplied but both were null", VAULT_CERTIFICATE, VAULT_CLIENT_SECRET));
-        }
 
-        var vault = (certPath != null)
-                ? AzureVault.authenticateWithCertificate(context.getMonitor(), clientId, tenantId, certPath, keyVaultName)
-                : AzureVault.authenticateWithSecret(context.getMonitor(), clientId, tenantId, clientSecret, keyVaultName);
+
+        AzureVault vault;
+        if (!isNullOrEmpty(clientSecret)) {
+            vault = AzureVault.authenticateWithSecret(context.getMonitor(), clientId, tenantId, clientSecret, keyVaultName);
+        } else if (!isNullOrEmpty(certPath)) {
+            vault = AzureVault.authenticateWithCertificate(context.getMonitor(), clientId, tenantId, certPath, keyVaultName);
+        } else {
+            vault = AzureVault.authenticateWithManagedIdentity(context.getMonitor(), clientId, resourceId, keyVaultName);
+        }
 
         context.registerService(Vault.class, vault);
         context.registerService(PrivateKeyResolver.class, new VaultPrivateKeyResolver(vault));

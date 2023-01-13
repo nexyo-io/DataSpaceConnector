@@ -19,6 +19,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -56,6 +57,15 @@ public class AzureVault implements Vault {
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .pfxCertificate(certificatePath, "")
+                .build();
+
+        return new AzureVault(monitor, createSecretClient(credential, keyVaultName));
+    }
+
+    public static AzureVault authenticateWithManagedIdentity(Monitor monitor, String clientId, String resourceId, String keyVaultName) {
+        var credential = new ManagedIdentityCredentialBuilder()
+                .clientId(clientId)
+                .resourceId(resourceId)
                 .build();
 
         return new AzureVault(monitor, createSecretClient(credential, keyVaultName));
