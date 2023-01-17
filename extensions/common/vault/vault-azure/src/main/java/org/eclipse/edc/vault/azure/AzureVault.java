@@ -62,10 +62,9 @@ public class AzureVault implements Vault {
         return new AzureVault(monitor, createSecretClient(credential, keyVaultName));
     }
 
-    public static AzureVault authenticateWithManagedIdentity(Monitor monitor, String clientId, String resourceId, String keyVaultName) {
+    public static AzureVault authenticateWithManagedIdentity(Monitor monitor, String clientId, String keyVaultName) {
         var credential = new ManagedIdentityCredentialBuilder()
                 .clientId(clientId)
-                .resourceId(resourceId)
                 .build();
 
         return new AzureVault(monitor, createSecretClient(credential, keyVaultName));
