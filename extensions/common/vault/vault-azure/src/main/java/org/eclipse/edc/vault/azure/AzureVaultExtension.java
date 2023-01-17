@@ -37,8 +37,6 @@ public class AzureVaultExtension implements ServiceExtension {
     @Setting
     private static final String VAULT_TENANT_ID = "edc.vault.tenantid";
     @Setting
-    private static final String VAULT_RESOURCE_ID = "edc.vault.resourceid";
-    @Setting
     private static final String VAULT_NAME = "edc.vault.name";
     @Setting
     private static final String VAULT_CLIENT_SECRET = "edc.vault.clientsecret";
@@ -54,7 +52,6 @@ public class AzureVaultExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         var clientId = getMandatorySetting(context, VAULT_CLIENT_ID);
         var tenantId = getMandatorySetting(context, VAULT_TENANT_ID);
-        var resourceId = context.getSetting(VAULT_RESOURCE_ID, null);
         var keyVaultName = getMandatorySetting(context, VAULT_NAME);
 
         var clientSecret = context.getSetting(VAULT_CLIENT_SECRET, null);
@@ -67,7 +64,7 @@ public class AzureVaultExtension implements ServiceExtension {
         } else if (!isNullOrEmpty(certPath)) {
             vault = AzureVault.authenticateWithCertificate(context.getMonitor(), clientId, tenantId, certPath, keyVaultName);
         } else {
-            vault = AzureVault.authenticateWithManagedIdentity(context.getMonitor(), clientId, resourceId, keyVaultName);
+            vault = AzureVault.authenticateWithManagedIdentity(context.getMonitor(), clientId, keyVaultName);
         }
 
         context.registerService(Vault.class, vault);
