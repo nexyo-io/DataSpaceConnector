@@ -78,7 +78,7 @@ public abstract class BaseSqlDialectStatements implements TransferProcessStoreSt
     public String getNextForStateTemplate() {
         return format("SELECT *, dr.%s as edc_data_request_id FROM %s LEFT OUTER JOIN %s dr ON %s.%s = dr.transfer_process_id " +
                         "WHERE %s=? " +
-                        "AND (%s IS NULL OR %s IN (SELECT %s FROM %s WHERE (? > (%s + %s)))) " +
+                        "AND (%s IS NULL OR %s NOT IN (SELECT %s FROM %s WHERE (? <= (%s + %s)))) " +
                         "ORDER BY %s ASC LIMIT ? ;",
                 getDataRequestIdColumn(), getTransferProcessTableName(), getDataRequestTable(), getTransferProcessTableName(), getIdColumn(), getStateColumn(), getLeaseIdColumn(), getLeaseIdColumn(), getLeaseIdColumn(),
                 getLeaseTableName(), getLeasedAtColumn(), getLeaseDurationColumn(), getStateTimestampColumn());
