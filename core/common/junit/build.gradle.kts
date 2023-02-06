@@ -30,7 +30,7 @@ dependencies {
     runtimeOnly(libs.junit.jupiter.engine)
     implementation(libs.okhttp)
 
-    implementation("org.junit-pioneer:junit-pioneer:1.9.1")
+    implementation("org.junit-pioneer:junit-pioneer:2.0.0")
 }
 
 publishing {
