@@ -61,7 +61,7 @@ public class BaseSqlDialectStatements implements ContractNegotiationStatements {
     public String getNextForStateTemplate() {
         return format("SELECT * FROM %s\n" +
                 "WHERE %s=?\n" +
-                "  AND (%s IS NULL OR %s IN (SELECT %s FROM %s WHERE (? > (%s + %s))))\n" +
+                "  AND (%s IS NULL OR %s NOT IN (SELECT %s FROM %s WHERE (? <= (%s + %s))))\n" +
                 "LIMIT ?;", getContractNegotiationTable(), getStateColumn(), getLeaseIdColumn(), getLeaseIdColumn(), getLeaseIdColumn(), getLeaseTableName(), getLeasedAtColumn(), getLeaseDurationColumn());
     }
 
