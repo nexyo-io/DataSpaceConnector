@@ -63,6 +63,24 @@ public class HttpRequestParams {
         var requestBuilder = new Request.Builder()
                 .url(toUrl())
                 .method(method, requestBody);
+
+        headers.forEach(requestBuilder::addHeader);
+        return requestBuilder.build();
+    }
+
+    public Request toHeadRequest() {
+        if (body == null) {
+            return toHeadRequest(null);
+        }
+        return toHeadRequest(new StringRequestBodySupplier(body));
+    }
+
+    public Request toHeadRequest(@Nullable Supplier<InputStream> bodySupplier) {
+        var requestBody = createRequestBody(bodySupplier);
+        var requestBuilder = new Request.Builder()
+                .url(toUrl())
+                .head();
+
         headers.forEach(requestBuilder::addHeader);
         return requestBuilder.build();
     }
