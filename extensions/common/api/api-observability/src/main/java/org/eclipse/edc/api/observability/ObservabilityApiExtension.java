@@ -44,8 +44,6 @@ public class ObservabilityApiExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-
-        webService.registerResource(new ObservabilityApiController(healthCheckService, true, context.getMonitor()));
         webService.registerResource(managementApiConfiguration.getContextAlias(), new ObservabilityApiController(healthCheckService, false, context.getMonitor()));
 
         // contribute to the liveness probe
