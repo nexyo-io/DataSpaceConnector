@@ -19,6 +19,7 @@ import org.eclipse.edc.catalog.spi.CatalogRequestMessage;
 import org.eclipse.edc.catalog.spi.DataServiceRegistry;
 import org.eclipse.edc.catalog.spi.DatasetResolver;
 import org.eclipse.edc.connector.spi.catalog.CatalogProtocolService;
+import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.service.spi.result.ServiceResult;
 import org.eclipse.edc.spi.agent.ParticipantAgentService;
 import org.eclipse.edc.spi.iam.ClaimToken;
@@ -53,10 +54,12 @@ public class CatalogProtocolServiceImpl implements CatalogProtocolService {
         try (var datasets = datasetResolver.query(agent, message.getQuerySpec())) {
             var dataServices = dataServiceRegistry.getDataServices();
 
+            var ds = datasets.collect(toList());;
+
             var catalog = Catalog.Builder.newInstance()
                     .dataServices(dataServices)
-                    .datasets(datasets.collect(toList()))
-                    .property(EDC_NAMESPACE + PARTICIPANT_ID_PROPERTY_KEY, participantId)
+                    .datasets(ds)
+                    .property(EDC_NAMESPACE + PARTICIPANT_ID_PROPERTY_KEY, ((Policy) ds.get(0).getOffers().values().toArray()[0]).getAssigner())
                     .build();
 
             return ServiceResult.success(catalog);

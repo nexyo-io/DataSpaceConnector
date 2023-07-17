@@ -92,7 +92,7 @@ public class ContractValidationServiceImpl implements ContractValidationService 
                         ContractOffer.Builder.newInstance()
                                 .id(offer.getId())
                                 .assetId(contractId.assetIdPart())
-                                .providerId(participantId)
+                                .providerId(result.getContent().getPolicy().getAssigner())
                                 .policy(r.getPolicy())
                                 .build())
         );

@@ -24,10 +24,7 @@ import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_OBLIGATION_ATTRIBUTE;
-import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_PERMISSION_ATTRIBUTE;
-import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_PROHIBITION_ATTRIBUTE;
-import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_TARGET_ATTRIBUTE;
+import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.*;
 
 /**
  * Converts from an ODRL policy as a {@link JsonObject} in JSON-LD expanded form to a {@link Policy}.
@@ -52,6 +49,8 @@ public class JsonObjectToPolicyTransformer extends AbstractJsonLdTransformer<Jso
                     return v -> builder.duties(transformArray(v, Duty.class, context));
                 case ODRL_TARGET_ATTRIBUTE:
                     return v -> builder.target(transformString(v, context));
+                case ODRL_ASSIGNER_ATTRIBUTE:
+                    return v -> builder.assigner(transformString(v, context));
                 default:
                     return v -> builder.extensibleProperty(key, transformGenericProperty(v, context));
             }
