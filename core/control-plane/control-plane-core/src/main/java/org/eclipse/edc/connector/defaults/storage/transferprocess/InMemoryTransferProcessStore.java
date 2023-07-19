@@ -54,7 +54,7 @@ public class InMemoryTransferProcessStore implements TransferProcessStore {
     }
 
     @Override
-    public @Nullable TransferProcess findForCorrelationId(String correlationId) {
+    public @Nullable TransferProcess findForCorrelationId(String correlationId, TransferProcess.Type transferProcessType) {
         var querySpec = QuerySpec.Builder.newInstance().filter(criterion("dataRequest.id", "=", correlationId)).build();
 
         return store.findAll(querySpec).findFirst().orElse(null);

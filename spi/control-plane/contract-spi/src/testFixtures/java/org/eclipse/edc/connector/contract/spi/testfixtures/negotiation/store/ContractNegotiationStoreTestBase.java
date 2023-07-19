@@ -40,6 +40,7 @@ import static org.eclipse.edc.connector.contract.spi.testfixtures.negotiation.st
 import static org.eclipse.edc.connector.contract.spi.testfixtures.negotiation.store.TestFunctions.createContractBuilder;
 import static org.eclipse.edc.connector.contract.spi.testfixtures.negotiation.store.TestFunctions.createNegotiation;
 import static org.eclipse.edc.connector.contract.spi.testfixtures.negotiation.store.TestFunctions.createNegotiationBuilder;
+import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation.Type.PROVIDER;
 import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiationStates.REQUESTED;
 import static org.eclipse.edc.spi.persistence.StateEntityStore.hasState;
 
@@ -96,7 +97,7 @@ public abstract class ContractNegotiationStoreTestBase {
         var negotiation = createNegotiation("test-cn1");
         getContractNegotiationStore().save(negotiation);
 
-        assertThat(getContractNegotiationStore().findForCorrelationId(negotiation.getCorrelationId()))
+        assertThat(getContractNegotiationStore().findForCorrelationId(negotiation.getCorrelationId(), PROVIDER))
                 .usingRecursiveComparison()
                 .isEqualTo(negotiation);
     }

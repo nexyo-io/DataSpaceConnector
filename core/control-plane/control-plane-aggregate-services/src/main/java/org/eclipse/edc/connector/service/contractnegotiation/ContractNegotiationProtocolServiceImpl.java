@@ -38,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 import static java.lang.String.format;
+import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation.Type.CONSUMER;
 import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation.Type.PROVIDER;
 
 public class ContractNegotiationProtocolServiceImpl implements ContractNegotiationProtocolService {
@@ -93,7 +94,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     @WithSpan
     @NotNull
     public ServiceResult<ContractNegotiation> notifyAgreed(ContractAgreementMessage message, ClaimToken claimToken) {
-        return transactionContext.execute(() -> getNegotiation(message)
+        return transactionContext.execute(() -> getNegotiation(message, CONSUMER)
                 .compose(negotiation -> validateAgreed(message, claimToken, negotiation))
                 .onSuccess(negotiation -> {
                     monitor.debug("[Consumer] Contract agreement received. Validation successful.");
@@ -108,7 +109,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     @WithSpan
     @NotNull
     public ServiceResult<ContractNegotiation> notifyVerified(ContractAgreementVerificationMessage message, ClaimToken claimToken) {
-        return transactionContext.execute(() -> getNegotiation(message)
+        return transactionContext.execute(() -> getNegotiation(message, PROVIDER)
                 .compose(negotiation -> validateRequest(claimToken, negotiation))
                 .onSuccess(negotiation -> {
                     negotiation.transitionVerified();
@@ -121,7 +122,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     @WithSpan
     @NotNull
     public ServiceResult<ContractNegotiation> notifyFinalized(ContractNegotiationEventMessage message, ClaimToken claimToken) {
-        return transactionContext.execute(() -> getNegotiation(message)
+        return transactionContext.execute(() -> getNegotiation(message, CONSUMER)
                 .compose(negotiation -> validateRequest(claimToken, negotiation))
                 .onSuccess(negotiation -> {
                     negotiation.transitionFinalized();
@@ -134,7 +135,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     @WithSpan
     @NotNull
     public ServiceResult<ContractNegotiation> notifyTerminated(ContractNegotiationTerminationMessage message, ClaimToken claimToken) {
-        return transactionContext.execute(() -> getNegotiation(message)
+        return transactionContext.execute(() -> getNegotiation(message, PROVIDER)
                 .compose(negotiation -> validateRequest(claimToken, negotiation))
                 .onSuccess(negotiation -> {
                     negotiation.transitionTerminated();
@@ -195,9 +196,9 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
         }
     }
 
-    private ServiceResult<ContractNegotiation> getNegotiation(ContractRemoteMessage message) {
+    private ServiceResult<ContractNegotiation> getNegotiation(ContractRemoteMessage message, ContractNegotiation.Type type) {
         var processId = message.getProcessId();
-        var negotiation = store.findForCorrelationId(processId);
+        var negotiation = store.findForCorrelationId(processId, type);
         if (negotiation == null) {
             return ServiceResult.notFound(format("ContractNegotiation with processId %s not found", processId));
         } else {

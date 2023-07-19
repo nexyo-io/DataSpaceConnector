@@ -99,10 +99,11 @@ public class SqlTransferProcessStore extends AbstractSqlStore implements Transfe
     }
 
     @Override
-    public @Nullable TransferProcess findForCorrelationId(String correlationId) {
+    public @Nullable TransferProcess findForCorrelationId(String correlationId, TransferProcess.Type transferProcessType) {
         return transactionContext.execute(() -> {
-            var criterion = criterion("dataRequest.id", "=", correlationId);
-            var query = QuerySpec.Builder.newInstance().filter(criterion).build();
+            var criterionProcessId = criterion("dataRequest.processId", "=", correlationId);
+            var criterionProcessType = criterion("type", "=", transferProcessType.toString());
+            var query = QuerySpec.Builder.newInstance().filter(List.of(criterionProcessId, criterionProcessType)).build();
             try (var stream = findAll(query)) {
                 return single(stream.collect(toList()));
             }

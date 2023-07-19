@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.service.catalog;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.eclipse.edc.catalog.spi.Catalog;
 import org.eclipse.edc.catalog.spi.CatalogRequestMessage;
 import org.eclipse.edc.catalog.spi.DataServiceRegistry;
@@ -23,6 +24,7 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.service.spi.result.ServiceResult;
 import org.eclipse.edc.spi.agent.ParticipantAgentService;
 import org.eclipse.edc.spi.iam.ClaimToken;
+import org.eclipse.edc.spi.iam.IdentityService;
 import org.jetbrains.annotations.NotNull;
 
 import static java.util.stream.Collectors.toList;
@@ -35,15 +37,15 @@ public class CatalogProtocolServiceImpl implements CatalogProtocolService {
     private final DatasetResolver datasetResolver;
     private final ParticipantAgentService participantAgentService;
     private final DataServiceRegistry dataServiceRegistry;
-    private final String participantId;
+    private final IdentityService identityService;
 
     public CatalogProtocolServiceImpl(DatasetResolver datasetResolver,
                                       ParticipantAgentService participantAgentService,
-                                      DataServiceRegistry dataServiceRegistry, String participantId) {
+                                      DataServiceRegistry dataServiceRegistry, IdentityService identityService) {
         this.datasetResolver = datasetResolver;
         this.participantAgentService = participantAgentService;
         this.dataServiceRegistry = dataServiceRegistry;
-        this.participantId = participantId;
+        this.identityService = identityService;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class CatalogProtocolServiceImpl implements CatalogProtocolService {
             var catalog = Catalog.Builder.newInstance()
                     .dataServices(dataServices)
                     .datasets(ds)
-                    .property(EDC_NAMESPACE + PARTICIPANT_ID_PROPERTY_KEY, ((Policy) ds.get(0).getOffers().values().toArray()[0]).getAssigner())
+                    .property(EDC_NAMESPACE + PARTICIPANT_ID_PROPERTY_KEY, identityService.getParticipantId())
                     .build();
 
             return ServiceResult.success(catalog);

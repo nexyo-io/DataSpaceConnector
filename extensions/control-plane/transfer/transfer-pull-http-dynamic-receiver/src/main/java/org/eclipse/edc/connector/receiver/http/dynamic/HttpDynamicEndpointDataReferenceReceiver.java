@@ -21,6 +21,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.eclipse.edc.connector.transfer.spi.edr.EndpointDataReferenceReceiver;
 import org.eclipse.edc.connector.transfer.spi.store.TransferProcessStore;
+import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.TypeManager;
@@ -60,7 +61,7 @@ public class HttpDynamicEndpointDataReferenceReceiver implements EndpointDataRef
 
     @Override
     public CompletableFuture<Result<Void>> send(@NotNull EndpointDataReference edr) {
-        var transferProcess = transferProcessStore.findForCorrelationId(edr.getId());
+        var transferProcess = transferProcessStore.findForCorrelationId(edr.getId(), TransferProcess.Type.PROVIDER);
 
         if (transferProcess == null) {
             return completedFuture(Result.failure(format("Failed to found transfer process for correlation id %s", edr.getId())));

@@ -99,7 +99,7 @@ public abstract class BaseSqlDialectStatements implements TransferProcessStoreSt
     @Override
     public String getSelectTemplate() {
         return format("SELECT *, edr.%s as edc_data_request_id FROM %s LEFT OUTER JOIN %s edr on %s.%s = edr.%s", getDataRequestIdColumn(),
-                getTransferProcessTableName(), getDataRequestTable(), getTransferProcessTableName(), getIdColumn(), getProcessIdColumn());
+                getTransferProcessTableName(), getDataRequestTable(), getTransferProcessTableName(), getIdColumn(), getTransferProcessIdFkColumn());
     }
 
     @Override

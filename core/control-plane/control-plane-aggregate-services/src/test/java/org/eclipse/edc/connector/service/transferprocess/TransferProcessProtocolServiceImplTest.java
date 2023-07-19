@@ -131,7 +131,7 @@ class TransferProcessProtocolServiceImplTest {
         when(negotiationStore.findContractAgreement(any())).thenReturn(contractAgreement());
         when(validationService.validateAgreement(any(), any())).thenReturn(Result.success(null));
         when(dataAddressValidator.validate(any())).thenReturn(Result.success());
-        when(store.findForCorrelationId("correlationId")).thenReturn(transferProcess(REQUESTED, "transferProcessId"));
+        when(store.findForCorrelationId("correlationId", TransferProcess.Type.CONSUMER)).thenReturn(transferProcess(REQUESTED, "transferProcessId"));
 
         var result = service.notifyRequested(message, claimToken());
 
@@ -195,7 +195,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyStarted_shouldTransitionToStarted() {
-        when(store.findForCorrelationId("correlationId")).thenReturn(transferProcess(REQUESTED, "transferProcessId"));
+        when(store.findForCorrelationId("correlationId", TransferProcess.Type.PROVIDER)).thenReturn(transferProcess(REQUESTED, "transferProcessId"));
         var message = TransferStartMessage.Builder.newInstance()
                 .protocol("protocol")
                 .counterPartyAddress("http://any")
@@ -219,7 +219,7 @@ class TransferProcessProtocolServiceImplTest {
     @Test
     void notifyStarted_shouldReturnConflict_whenStatusIsNotValid() {
         var transferProcess = TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString()).state(COMPLETED.code()).build();
-        when(store.findForCorrelationId("correlationId")).thenReturn(transferProcess);
+        when(store.findForCorrelationId("correlationId", TransferProcess.Type.PROVIDER)).thenReturn(transferProcess);
         var message = TransferStartMessage.Builder.newInstance()
                 .protocol("protocol")
                 .counterPartyAddress("http://any")
@@ -235,7 +235,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyCompleted_shouldTransitionToCompleted() {
-        when(store.findForCorrelationId("correlationId")).thenReturn(transferProcess(STARTED, "transferProcessId"));
+        when(store.findForCorrelationId("correlationId", TransferProcess.Type.CONSUMER)).thenReturn(transferProcess(STARTED, "transferProcessId"));
         var message = TransferCompletionMessage.Builder.newInstance()
                 .protocol("protocol")
                 .counterPartyAddress("http://any")
@@ -254,7 +254,7 @@ class TransferProcessProtocolServiceImplTest {
     @Test
     void notifyCompleted_shouldReturnConflict_whenStatusIsNotValid() {
         var transferProcess = TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString()).state(REQUESTED.code()).build();
-        when(store.findForCorrelationId("correlationId")).thenReturn(transferProcess);
+        when(store.findForCorrelationId("correlationId", TransferProcess.Type.CONSUMER)).thenReturn(transferProcess);
         var message = TransferCompletionMessage.Builder.newInstance()
                 .protocol("protocol")
                 .counterPartyAddress("http://any")
@@ -270,7 +270,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyTerminated_shouldTransitionToTerminated() {
-        when(store.findForCorrelationId("correlationId")).thenReturn(transferProcess(STARTED, "transferProcessId"));
+        when(store.findForCorrelationId("correlationId", TransferProcess.Type.PROVIDER)).thenReturn(transferProcess(STARTED, "transferProcessId"));
         var message = TransferTerminationMessage.Builder.newInstance()
                 .protocol("protocol")
                 .counterPartyAddress("http://any")
@@ -291,7 +291,7 @@ class TransferProcessProtocolServiceImplTest {
     @Test
     void notifyTerminated_shouldReturnConflict_whenStatusIsNotValid() {
         var transferProcess = TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString()).state(TERMINATED.code()).build();
-        when(store.findForCorrelationId("correlationId")).thenReturn(transferProcess);
+        when(store.findForCorrelationId("correlationId", TransferProcess.Type.PROVIDER)).thenReturn(transferProcess);
         var message = TransferTerminationMessage.Builder.newInstance()
                 .protocol("protocol")
                 .counterPartyAddress("http://any")
@@ -310,7 +310,7 @@ class TransferProcessProtocolServiceImplTest {
     @ParameterizedTest
     @ArgumentsSource(NotFoundArguments.class)
     <M extends RemoteMessage> void notify_shouldFail_whenTransferProcessNotFound(MethodCall<M> methodCall, M message) {
-        when(store.findForCorrelationId(any())).thenReturn(null);
+        when(store.findForCorrelationId(any(), TransferProcess.Type.PROVIDER)).thenReturn(null);
 
         var result = methodCall.call(service, message, claimToken());
 

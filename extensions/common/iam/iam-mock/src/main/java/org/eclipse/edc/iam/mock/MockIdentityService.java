@@ -62,6 +62,11 @@ public class MockIdentityService implements IdentityService {
                 .build());
     }
 
+    @Override
+    public String getParticipantId() {
+        return "hub";
+    }
+
     private static class MockToken {
         private String region;
         private String audience;

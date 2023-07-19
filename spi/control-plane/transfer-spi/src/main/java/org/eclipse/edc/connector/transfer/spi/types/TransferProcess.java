@@ -459,9 +459,9 @@ public class TransferProcess extends StatefulEntity<TransferProcess> {
                 entity.provisionedResourceSet.setTransferProcessId(entity.id);
             }
 
-            if (entity.dataRequest != null) {
-                entity.dataRequest.associateWithProcessId(entity.id);
-            }
+//            if (entity.dataRequest != null) {
+//                entity.dataRequest.associateWithProcessId(entity.id);
+//            }
 
             if (entity.state == 0) {
                 entity.transitionTo(INITIAL.code());

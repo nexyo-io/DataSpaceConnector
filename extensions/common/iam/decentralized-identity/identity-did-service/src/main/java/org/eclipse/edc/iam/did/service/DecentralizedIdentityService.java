@@ -118,6 +118,11 @@ public class DecentralizedIdentityService implements IdentityService {
         }
     }
 
+    @Override
+    public String getParticipantId() {
+        return "hub";
+    }
+
     @NotNull
     private Optional<VerificationMethod> firstVerificationMethod(DidDocument did) {
         return did.getVerificationMethod().stream()

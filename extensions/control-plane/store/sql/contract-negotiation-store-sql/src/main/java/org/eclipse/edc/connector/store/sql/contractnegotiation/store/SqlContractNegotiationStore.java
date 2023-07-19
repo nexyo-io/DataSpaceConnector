@@ -76,10 +76,10 @@ public class SqlContractNegotiationStore extends AbstractSqlStore implements Con
     }
 
     @Override
-    public @Nullable ContractNegotiation findForCorrelationId(String correlationId) {
+    public @Nullable ContractNegotiation findForCorrelationId(String correlationId, ContractNegotiation.Type contractNegotiationType) {
         return transactionContext.execute(() -> {
             // utilize the generic query api
-            var query = QuerySpec.Builder.newInstance().filter(List.of(new Criterion("correlationId", "=", correlationId))).build();
+            var query = QuerySpec.Builder.newInstance().filter(List.of(new Criterion("correlationId", "=", correlationId), new Criterion("type", "=", contractNegotiationType.toString()))).build();
             try (var stream = queryNegotiations(query)) {
                 return single(stream.collect(toList()));
             }

@@ -20,6 +20,7 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import okhttp3.OkHttpClient;
 import org.eclipse.edc.connector.transfer.spi.store.TransferProcessStore;
+import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.TypeManager;
@@ -89,7 +90,7 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
 
     @Test
     public void send_shouldForwardTheEdr_withReceiverEndpoint() throws ExecutionException, InterruptedException {
-        when(transferProcessStore.findForCorrelationId(any()))
+        when(transferProcessStore.findForCorrelationId(any(), TransferProcess.Type.CONSUMER))
                 .thenReturn(createTransferProcess(TRANSFER_ID, transferProperties(receiverUrl())));
 
         var edr = createEndpointDataReferenceBuilder()
@@ -120,7 +121,7 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
                 .monitor(monitor)
                 .build();
 
-        when(transferProcessStore.findForCorrelationId(any()))
+        when(transferProcessStore.findForCorrelationId(any(), TransferProcess.Type.CONSUMER))
                 .thenReturn(createTransferProcess(TRANSFER_ID, transferPropertiesWithAuth(receiverUrl(), authKey, authToken)));
 
         var edr = createEndpointDataReferenceBuilder().build();
@@ -138,7 +139,7 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
 
     @Test
     public void send_shouldFailForwardTheEdr_withPathNotFound() throws ExecutionException, InterruptedException {
-        when(transferProcessStore.findForCorrelationId(any()))
+        when(transferProcessStore.findForCorrelationId(any(), TransferProcess.Type.CONSUMER))
                 .thenReturn(createTransferProcess(TRANSFER_ID, transferProperties(receiverUrl() + "/modified")));
 
         var edr = createEndpointDataReferenceBuilder().build();
@@ -155,7 +156,7 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
 
     @Test
     public void send_shouldFailForwardTheEdr_processIdNotFound() throws ExecutionException, InterruptedException {
-        when(transferProcessStore.findForCorrelationId(any())).thenReturn(null);
+        when(transferProcessStore.findForCorrelationId(any(), TransferProcess.Type.CONSUMER)).thenReturn(null);
 
         var edr = createEndpointDataReferenceBuilder().build();
 
@@ -170,7 +171,7 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
 
     @Test
     public void send_shouldNotForwardTheEdr_whenReceiverUrlMissing() throws ExecutionException, InterruptedException {
-        when(transferProcessStore.findForCorrelationId(any())).thenReturn(createTransferProcess(TRANSFER_ID));
+        when(transferProcessStore.findForCorrelationId(any(), TransferProcess.Type.CONSUMER)).thenReturn(createTransferProcess(TRANSFER_ID));
 
         var edr = createEndpointDataReferenceBuilder().build();
 
@@ -197,7 +198,7 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
                 .monitor(monitor)
                 .build();
 
-        when(transferProcessStore.findForCorrelationId(any())).thenReturn(createTransferProcess(TRANSFER_ID));
+        when(transferProcessStore.findForCorrelationId(any(), TransferProcess.Type.CONSUMER)).thenReturn(createTransferProcess(TRANSFER_ID));
 
         var edr = createEndpointDataReferenceBuilder().build();
 

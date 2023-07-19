@@ -60,7 +60,7 @@ public class InMemoryContractNegotiationStore implements ContractNegotiationStor
     }
 
     @Override
-    public @Nullable ContractNegotiation findForCorrelationId(String correlationId) {
+    public @Nullable ContractNegotiation findForCorrelationId(String correlationId, ContractNegotiation.Type contractNegotiationType) {
         return store.findAll().filter(p -> correlationId.equals(p.getCorrelationId())).findFirst().orElse(null);
     }
 

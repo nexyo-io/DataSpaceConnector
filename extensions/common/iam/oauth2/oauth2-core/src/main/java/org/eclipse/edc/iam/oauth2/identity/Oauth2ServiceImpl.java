@@ -80,6 +80,11 @@ public class Oauth2ServiceImpl implements IdentityService {
         return tokenValidationService.validate(tokenRepresentation);
     }
 
+    @Override
+    public String getParticipantId() {
+        return "hub";
+    }
+
     @NotNull
     private Result<String> generateClientAssertion() {
         var decorators = jwtDecoratorRegistry.getAll().toArray(JwtDecorator[]::new);

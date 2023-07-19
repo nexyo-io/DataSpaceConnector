@@ -177,8 +177,8 @@ public class TransferProcessManagerImpl implements TransferProcessManager, Provi
     public StatusResult<TransferProcess> initiateConsumerRequest(TransferRequest transferRequest) {
         // make the request idempotent: if the process exists, return
         var dataRequest = transferRequest.getDataRequest();
-        var existingTransferProcess = transferProcessStore.findForCorrelationId(dataRequest.getId());
-        if (existingTransferProcess != null) {
+        var existingTransferProcess = transferProcessStore.findForCorrelationId(dataRequest.getProcessId(), CONSUMER);
+        if (existingTransferProcess != null && existingTransferProcess.getType() == CONSUMER) {
             return StatusResult.success(existingTransferProcess);
         }
         var process = TransferProcess.Builder.newInstance()
@@ -399,7 +399,7 @@ public class TransferProcessManagerImpl implements TransferProcessManager, Provi
                 .orElse(dataRequest.getDataDestination());
 
         var message = TransferRequestMessage.Builder.newInstance()
-                .processId(dataRequest.getId())
+                .processId(dataRequest.getProcessId())
                 .protocol(dataRequest.getProtocol())
                 .counterPartyAddress(dataRequest.getConnectorAddress())
                 .callbackAddress(protocolWebhook.url())
@@ -456,7 +456,7 @@ public class TransferProcessManagerImpl implements TransferProcessManager, Provi
                 .protocol(dataRequest.getProtocol())
                 .dataAddress(dataFlowResponse.getDataAddress())
                 .counterPartyAddress(dataRequest.getConnectorAddress())
-                .processId(dataRequest.getId())
+                .processId(dataRequest.getProcessId())
                 .policy(policy)
                 .build();
 
@@ -527,7 +527,7 @@ public class TransferProcessManagerImpl implements TransferProcessManager, Provi
         var message = TransferCompletionMessage.Builder.newInstance()
                 .protocol(dataRequest.getProtocol())
                 .counterPartyAddress(dataRequest.getConnectorAddress())
-                .processId(dataRequest.getId())
+                .processId(dataRequest.getProcessId())
                 .policy(policyArchive.findPolicyForContract(dataRequest.getContractId()))
                 .build();
 
@@ -560,7 +560,7 @@ public class TransferProcessManagerImpl implements TransferProcessManager, Provi
         var message = TransferTerminationMessage.Builder.newInstance()
                 .counterPartyAddress(dataRequest.getConnectorAddress())
                 .protocol(dataRequest.getProtocol())
-                .processId(dataRequest.getId())
+                .processId(dataRequest.getProcessId())
                 .policy(policyArchive.findPolicyForContract(dataRequest.getContractId()))
                 .build();
 

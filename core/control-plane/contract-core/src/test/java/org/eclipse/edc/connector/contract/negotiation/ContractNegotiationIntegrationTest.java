@@ -67,6 +67,7 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation.Type.CONSUMER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -166,7 +167,7 @@ class ContractNegotiationIntegrationTest {
         await().atMost(DEFAULT_TEST_TIMEOUT).pollInterval(DEFAULT_POLL_INTERVAL).untilAsserted(() -> {
             assertThat(consumerNegotiationId).isNotNull();
             var consumerNegotiation = consumerStore.findById(consumerNegotiationId);
-            var providerNegotiation = providerStore.findForCorrelationId(consumerNegotiationId);
+            var providerNegotiation = providerStore.findForCorrelationId(consumerNegotiationId, CONSUMER);
             assertThat(consumerNegotiation).isNotNull();
             assertThat(providerNegotiation).isNotNull();
 
@@ -234,7 +235,7 @@ class ContractNegotiationIntegrationTest {
         await().atMost(DEFAULT_TEST_TIMEOUT).pollInterval(DEFAULT_POLL_INTERVAL).untilAsserted(() -> {
             assertThat(consumerNegotiationId).isNotNull();
             var consumerNegotiation = consumerStore.findById(consumerNegotiationId);
-            var providerNegotiation = providerStore.findForCorrelationId(consumerNegotiationId);
+            var providerNegotiation = providerStore.findForCorrelationId(consumerNegotiationId, CONSUMER);
             assertThat(consumerNegotiation).isNotNull();
             assertThat(providerNegotiation).isNotNull();
 

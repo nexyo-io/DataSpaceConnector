@@ -24,6 +24,8 @@ import org.eclipse.edc.spi.types.domain.Polymorphic;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.UUID.randomUUID;
+
 /**
  * Polymorphic data request.
  */
@@ -203,6 +205,9 @@ public class DataRequest implements Polymorphic {
         public DataRequest build() {
             if (request.dataDestination == null && request.getDestinationType() == null) {
                 throw new IllegalArgumentException("A data destination or type must be specified");
+            }
+            if(request.processId == null) {
+                request.processId = randomUUID().toString();
             }
             return request;
         }

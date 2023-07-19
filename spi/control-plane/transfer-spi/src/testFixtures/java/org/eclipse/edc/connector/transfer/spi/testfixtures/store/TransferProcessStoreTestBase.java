@@ -281,14 +281,14 @@ public abstract class TransferProcessStoreTestBase {
         var transferProcess = createTransferProcessBuilder("id1").dataRequest(dataRequest).build();
         getTransferProcessStore().updateOrCreate(transferProcess);
 
-        var res = getTransferProcessStore().findForCorrelationId("correlationId");
+        var res = getTransferProcessStore().findForCorrelationId("correlationId", TransferProcess.Type.CONSUMER);
 
         assertThat(res).usingRecursiveComparison().isEqualTo(transferProcess);
     }
 
     @Test
     void findForCorrelationId_notExist() {
-        assertThat(getTransferProcessStore().findForCorrelationId("not-exist")).isNull();
+        assertThat(getTransferProcessStore().findForCorrelationId("not-exist", TransferProcess.Type.CONSUMER)).isNull();
     }
 
     @Test
@@ -875,7 +875,7 @@ public abstract class TransferProcessStoreTestBase {
         assertNotNull(found);
         assertNotSame(found, transferProcess); // enforce by-value
 
-        assertNotNull(getTransferProcessStore().findForCorrelationId("correlationId"));
+        assertNotNull(getTransferProcessStore().findForCorrelationId("correlationId", TransferProcess.Type.CONSUMER));
 
         assertEquals(INITIAL.code(), found.getState());
 
@@ -889,7 +889,7 @@ public abstract class TransferProcessStoreTestBase {
 
         getTransferProcessStore().delete(id);
         assertNull(getTransferProcessStore().findById(id));
-        assertNull(getTransferProcessStore().findForCorrelationId("correlationId"));
+        assertNull(getTransferProcessStore().findForCorrelationId("correlationId", TransferProcess.Type.CONSUMER));
     }
 
     @Test

@@ -38,7 +38,7 @@ public interface TransferProcessStore extends StateEntityStore<TransferProcess> 
      * Returns the transfer process for the correlation id or null if not found.
      */
     @Nullable
-    TransferProcess findForCorrelationId(String correlationId);
+    TransferProcess findForCorrelationId(String correlationId, TransferProcess.Type transferProcessType);
 
     /**
      * Persists a transfer process. This follows UPSERT semantics, so if the object didn't exit before, it's

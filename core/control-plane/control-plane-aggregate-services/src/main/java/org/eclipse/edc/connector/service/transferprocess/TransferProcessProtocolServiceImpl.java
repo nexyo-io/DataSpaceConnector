@@ -101,21 +101,21 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
     @WithSpan
     @NotNull
     public ServiceResult<TransferProcess> notifyStarted(TransferStartMessage message, ClaimToken claimToken) {
-        return onMessageDo(message, transferProcess -> startedAction(message, transferProcess));
+        return onMessageDo(message, transferProcess -> startedAction(message, transferProcess), CONSUMER);
     }
 
     @Override
     @WithSpan
     @NotNull
     public ServiceResult<TransferProcess> notifyCompleted(TransferCompletionMessage message, ClaimToken claimToken) {
-        return onMessageDo(message, transferProcess -> completedAction(message, transferProcess));
+        return onMessageDo(message, transferProcess -> completedAction(message, transferProcess), PROVIDER);
     }
 
     @Override
     @WithSpan
     @NotNull
     public ServiceResult<TransferProcess> notifyTerminated(TransferTerminationMessage message, ClaimToken claimToken) {
-        return onMessageDo(message, transferProcess -> terminatedAction(message, transferProcess));
+        return onMessageDo(message, transferProcess -> terminatedAction(message, transferProcess), PROVIDER);
     }
 
     @NotNull
@@ -124,7 +124,8 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
         var assetId = contractId.assetIdPart();
 
         var dataRequest = DataRequest.Builder.newInstance()
-                .id(message.getProcessId())
+                .id(randomUUID().toString())
+                .processId(message.getProcessId())
                 .protocol(message.getProtocol())
                 .connectorAddress(message.getCallbackAddress())
                 .dataDestination(message.getDataDestination())
@@ -133,7 +134,7 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
                 .contractId(message.getContractId())
                 .build();
 
-        var existingTransferProcess = transferProcessStore.findForCorrelationId(dataRequest.getId());
+        var existingTransferProcess = transferProcessStore.findForCorrelationId(dataRequest.getProcessId(), PROVIDER);
         if (existingTransferProcess != null) {
             return ServiceResult.success(existingTransferProcess);
         }
@@ -194,9 +195,9 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
         }
     }
 
-    private ServiceResult<TransferProcess> onMessageDo(TransferRemoteMessage message, Function<TransferProcess, ServiceResult<TransferProcess>> action) {
+    private ServiceResult<TransferProcess> onMessageDo(TransferRemoteMessage message, Function<TransferProcess, ServiceResult<TransferProcess>> action, TransferProcess.Type transferProcessType) {
         return transactionContext.execute(() -> Optional.of(message.getProcessId())
-                .map(transferProcessStore::findForCorrelationId)
+                .map((pId) -> transferProcessStore.findForCorrelationId(pId, transferProcessType))
                 .map(action)
                 .orElse(ServiceResult.notFound(format("TransferProcess with DataRequest id %s not found", message.getProcessId()))));
     }
