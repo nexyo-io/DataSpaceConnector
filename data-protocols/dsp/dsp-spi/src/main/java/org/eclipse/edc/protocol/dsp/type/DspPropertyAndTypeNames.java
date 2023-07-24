@@ -24,6 +24,7 @@ public interface DspPropertyAndTypeNames {
     String DSPACE_PROPERTY_CODE = DSPACE_SCHEMA + "code";
     String DSPACE_PROPERTY_REASON = DSPACE_SCHEMA + "reason";
     String DSPACE_PROPERTY_PROCESS_ID = DSPACE_SCHEMA + "processId";
+    String DSPACE_PROPERTY_PROPERTIES = DSPACE_SCHEMA + "properties";
     String DSPACE_PROPERTY_CALLBACK_ADDRESS = DSPACE_SCHEMA + "callbackAddress";
     String DSPACE_PROPERTY_STATE = DSPACE_SCHEMA + "state";
 }

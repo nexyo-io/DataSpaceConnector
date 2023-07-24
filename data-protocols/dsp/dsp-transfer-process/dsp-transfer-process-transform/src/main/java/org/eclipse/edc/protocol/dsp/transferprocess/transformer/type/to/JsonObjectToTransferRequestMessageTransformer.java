@@ -22,9 +22,11 @@ import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCT_FORMAT_ATTRIBUTE;
-import static org.eclipse.edc.protocol.dsp.type.DspPropertyAndTypeNames.DSPACE_PROPERTY_CALLBACK_ADDRESS;
-import static org.eclipse.edc.protocol.dsp.type.DspPropertyAndTypeNames.DSPACE_PROPERTY_PROCESS_ID;
+import static org.eclipse.edc.protocol.dsp.type.DspPropertyAndTypeNames.*;
 import static org.eclipse.edc.protocol.dsp.type.DspTransferProcessPropertyAndTypeNames.DSPACE_PROPERTY_CONTRACT_AGREEMENT_ID;
 import static org.eclipse.edc.protocol.dsp.type.DspTransferProcessPropertyAndTypeNames.DSPACE_PROPERTY_DATA_ADDRESS;
 
@@ -46,6 +48,8 @@ public class JsonObjectToTransferRequestMessageTransformer extends AbstractJsonL
                     return v -> transferRequestMessageBuilder.contractId(transformString(v, context));
                 case DSPACE_PROPERTY_CALLBACK_ADDRESS:
                     return v -> transferRequestMessageBuilder.callbackAddress(transformString(v, context));
+                case DSPACE_PROPERTY_PROPERTIES:
+                    return v -> transferRequestMessageBuilder.properties(parseProperties(String.valueOf(v)));
                 default:
                     return doNothing();
             }
@@ -54,6 +58,16 @@ public class JsonObjectToTransferRequestMessageTransformer extends AbstractJsonL
         transferRequestMessageBuilder.dataDestination(createDataAddress(messageObject, context));
 
         return transferRequestMessageBuilder.build();
+    }
+
+    private Map<String, String> parseProperties(String value) {
+        Map<String, String> deserializedMap = new HashMap<>();
+        String[] keyValuePairs = value.substring(1, value.length() - 1).split(", ");
+        for (String pair : keyValuePairs) {
+            String[] entry = pair.split("=");
+            deserializedMap.put("https://w3id.org/edc/v0.0.1/ns/assetUUID", entry[1].replace("}\"}", ""));
+        }
+        return deserializedMap;
     }
 
     // TODO replace with JsonObjectToDataAddressTransformer

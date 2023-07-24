@@ -16,6 +16,7 @@ package org.eclipse.edc.protocol.dsp.transferprocess.transformer.type.from;
 
 import jakarta.json.JsonBuilderFactory;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 import org.eclipse.edc.connector.transfer.spi.types.protocol.TransferRequestMessage;
 import org.eclipse.edc.jsonld.spi.JsonLdKeywords;
 import org.eclipse.edc.jsonld.spi.transformer.AbstractJsonLdTransformer;
@@ -24,8 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCT_FORMAT_ATTRIBUTE;
-import static org.eclipse.edc.protocol.dsp.type.DspPropertyAndTypeNames.DSPACE_PROPERTY_CALLBACK_ADDRESS;
-import static org.eclipse.edc.protocol.dsp.type.DspPropertyAndTypeNames.DSPACE_PROPERTY_PROCESS_ID;
+import static org.eclipse.edc.protocol.dsp.type.DspPropertyAndTypeNames.*;
 import static org.eclipse.edc.protocol.dsp.type.DspTransferProcessPropertyAndTypeNames.DSPACE_PROPERTY_CONTRACT_AGREEMENT_ID;
 import static org.eclipse.edc.protocol.dsp.type.DspTransferProcessPropertyAndTypeNames.DSPACE_PROPERTY_DATA_ADDRESS;
 import static org.eclipse.edc.protocol.dsp.type.DspTransferProcessPropertyAndTypeNames.DSPACE_TYPE_TRANSFER_REQUEST_MESSAGE;
@@ -52,6 +52,9 @@ public class JsonObjectFromTransferRequestMessageTransformer extends AbstractJso
         builder.add(DCT_FORMAT_ATTRIBUTE, transferRequestMessage.getDataDestination().getType());
         builder.add(DSPACE_PROPERTY_CALLBACK_ADDRESS, transferRequestMessage.getCallbackAddress());
         builder.add(DSPACE_PROPERTY_PROCESS_ID, transferRequestMessage.getProcessId());
+        if (transferRequestMessage.getProperties().size() > 0) {
+            builder.add(DSPACE_PROPERTY_PROPERTIES, transferRequestMessage.getProperties().toString());
+        }
 
         if (transferRequestMessage.getDataDestination().getProperties().size() > 1) {
             builder.add(DSPACE_PROPERTY_DATA_ADDRESS, context.transform(transferRequestMessage.getDataDestination(), JsonObject.class));
