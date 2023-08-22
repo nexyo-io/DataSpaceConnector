@@ -21,6 +21,7 @@ import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiationStates;
 import org.eclipse.edc.connector.policy.spi.store.PolicyDefinitionStore;
+import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.message.RemoteMessageDispatcherRegistry;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.protocol.ProtocolWebhook;
@@ -47,7 +48,7 @@ import static org.eclipse.edc.spi.persistence.StateEntityStore.hasState;
 import static org.eclipse.edc.spi.persistence.StateEntityStore.isNotPending;
 
 public abstract class AbstractContractNegotiationManager {
-    protected String participantId;
+    protected IdentityService identityService;
     protected ContractNegotiationStore negotiationStore;
     protected RemoteMessageDispatcherRegistry dispatcherRegistry;
     protected ContractNegotiationObservable observable;
@@ -190,8 +191,8 @@ public abstract class AbstractContractNegotiationManager {
             this.manager.executorInstrumentation = ExecutorInstrumentation.noop(); // default noop implementation
         }
 
-        public Builder<T> participantId(String id) {
-            manager.participantId = id;
+        public Builder<T> identityService(IdentityService identityService) {
+            manager.identityService = identityService;
             return this;
         }
 
@@ -261,7 +262,7 @@ public abstract class AbstractContractNegotiationManager {
         }
 
         public T build() {
-            Objects.requireNonNull(manager.participantId, "participantId");
+            Objects.requireNonNull(manager.identityService, "identityService");
             Objects.requireNonNull(manager.monitor, "monitor");
             Objects.requireNonNull(manager.dispatcherRegistry, "dispatcherRegistry");
             Objects.requireNonNull(manager.observable, "observable");

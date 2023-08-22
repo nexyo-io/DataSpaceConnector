@@ -28,6 +28,7 @@ import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiat
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiationTerminationMessage;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequest;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequestMessage;
+import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.statemachine.StateMachineManager;
 
@@ -168,7 +169,7 @@ public class ConsumerContractNegotiationManagerImpl extends AbstractContractNego
                 .id(contractId.derive().toString())
                 .contractSigningDate(clock.instant().getEpochSecond())
                 .providerId(negotiation.getCounterPartyId())
-                .consumerId(participantId)
+                .consumerId(identityService.getParticipantId())
                 .policy(policy)
                 .assetId(lastOffer.getAssetId())
                 .build();
