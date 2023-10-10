@@ -78,7 +78,7 @@ public class BaseSourceHttpParamsDecorator implements HttpParamsDecorator {
 
     @Nullable
     private String extractBody(HttpDataAddress address, DataFlowRequest request) {
-        return Boolean.parseBoolean(address.getProxyBody()) ? request.getProperties().get(BODY) : null;
+        return Boolean.parseBoolean(address.getProxyBody()) ? request.getProperties().get(BODY) : address.getBody();
     }
 
     @Nullable

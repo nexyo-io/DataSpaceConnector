@@ -41,6 +41,7 @@ public class HttpDataAddress extends DataAddress {
 
     private static final String NAME = "name";
     private static final String PATH = "path";
+    private static final String BODY = "body";
     private static final String QUERY_PARAMS = "queryParams";
     private static final String METHOD = "method";
     private static final String BASE_URL = "baseUrl";
@@ -125,6 +126,11 @@ public class HttpDataAddress extends DataAddress {
     @JsonIgnore
     public String getContentType() {
         return getStringProperty(CONTENT_TYPE, OCTET_STREAM);
+    }
+
+    @JsonIgnore
+    public String getBody() {
+        return getStringProperty(BODY);
     }
 
     @JsonIgnore
