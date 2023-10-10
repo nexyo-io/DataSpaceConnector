@@ -181,7 +181,7 @@ public class TransferProcessManagerImpl extends AbstractStateEntityManager<Trans
         var policy = policyArchive.findPolicyForContract(contractId);
 
         if (policy == null) {
-            transitionToTerminated(process, "Policy not found for contract: " + contractId);
+            transitionToTerminated(process, "Policy or valid contract negotiation not found for contract: " + contractId);
             return true;
         }
 
