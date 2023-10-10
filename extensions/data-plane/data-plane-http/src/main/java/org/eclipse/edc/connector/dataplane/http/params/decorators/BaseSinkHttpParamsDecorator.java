@@ -29,7 +29,7 @@ public class BaseSinkHttpParamsDecorator implements HttpParamsDecorator {
         var method = Optional.ofNullable(address.getMethod()).orElse(DEFAULT_METHOD);
         params.method(method);
         params.path(address.getPath());
-        params.queryParams(null);
+        params.queryParams(address.getQueryParams());
         Optional.ofNullable(address.getContentType())
                 .ifPresent(contentType -> {
                     params.contentType(contentType);
